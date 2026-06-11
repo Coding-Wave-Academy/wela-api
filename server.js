@@ -19,7 +19,6 @@ app.listen(process.env.PORT, () => {
 });
 
 app.post("/create-case", async (req, res) => {
-
   try {
 
     const args =
@@ -30,52 +29,53 @@ app.post("/create-case", async (req, res) => {
       "WELA-" + Date.now();
 
     const document = await databases.createDocument(
-  process.env.DATABASE_ID,
-  process.env.COLLECTION_ID,
-  ID.unique(),
-  {
-    childName: args.childName || "",
+      process.env.DATABASE_ID,
+      process.env.COLLECTION_ID,
+      ID.unique(),
+      {
+        childName: args.childName || "",
 
-    age: args.age || "Unknown",
+        age: args.age || "Unknown",
 
-    description:
-      args.description || "Not provided",
+        description:
+          args.description || "Not provided",
 
-    lastSeenLocation:
-      args.lastSeenLocation || "Unknown",
+        lastSeenLocation:
+          args.lastSeenLocation || "Unknown",
 
-    lastSeenTime:
-      args.lastSeenTime || "Unknown",
+        lastSeenTime:
+          args.lastSeenTime || "Unknown",
 
-    callerNumber:
-      args.callerNumber || "",
+        callerNumber:
+          args.callerNumber || "",
 
-    photoURL: "",
+        photoURL: "",
 
-    status: "INTAKE",
+        status: "INTAKE",
 
-    callTranscript: "",
+        callTranscript: "",
 
-    extractedData: JSON.stringify({
-      childName: args.childName,
-      age: args.age,
-      description: args.description,
-      lastSeenLocation: args.lastSeenLocation,
-      lastSeenTime: args.lastSeenTime
-    }),
+        extractedData: JSON.stringify({
+          childName: args.childName,
+          age: args.age,
+          description: args.description,
+          lastSeenLocation:
+            args.lastSeenLocation,
+          lastSeenTime:
+            args.lastSeenTime
+        }),
 
-    language:
-      args.language || "french",
+        language:
+          args.language || "french",
 
-    callComplete:
-      args.callComplete || false,
+        callComplete:
+          args.callComplete || false,
 
-    emergencyCaseId:
-      emergencyCaseId,
+        emergencyCaseId,
 
-    source: "voice_call"
-  }
-);
+        source: "voice_call"
+      }
+    );
 
     return res.json({
       success: true,
@@ -91,6 +91,6 @@ app.post("/create-case", async (req, res) => {
       success: false,
       error: error.message
     });
-  }
 
+  }
 });
