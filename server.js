@@ -29,33 +29,53 @@ app.post("/create-case", async (req, res) => {
     const emergencyCaseId =
       "WELA-" + Date.now();
 
-    const document =
-      await databases.createDocument(
-        process.env.DATABASE_ID,
-        process.env.COLLECTION_ID,
-        ID.unique(),
-        {
-          childName: args.childName,
-          age: args.age || "",
-          description: args.description || "",
-          lastSeenLocation:
-            args.lastSeenLocation || "",
-          lastSeenTime:
-            args.lastSeenTime || "",
-          callerNumber:
-            args.callerNumber || "",
-          language:
-            args.language || "english",
+    const document = await databases.createDocument(
+  process.env.DATABASE_ID,
+  process.env.COLLECTION_ID,
+  ID.unique(),
+  {
+    childName: args.childName || "",
 
-          status: "active",
-          source: "voice_call",
+    age: args.age || "Unknown",
 
-          emergencyCaseId,
+    description:
+      args.description || "Not provided",
 
-          createdAt:
-            new Date().toISOString()
-        }
-      );
+    lastSeenLocation:
+      args.lastSeenLocation || "Unknown",
+
+    lastSeenTime:
+      args.lastSeenTime || "Unknown",
+
+    callerNumber:
+      args.callerNumber || "",
+
+    photoURL: "",
+
+    status: "INTAKE",
+
+    callTranscript: "",
+
+    extractedData: JSON.stringify({
+      childName: args.childName,
+      age: args.age,
+      description: args.description,
+      lastSeenLocation: args.lastSeenLocation,
+      lastSeenTime: args.lastSeenTime
+    }),
+
+    language:
+      args.language || "french",
+
+    callComplete:
+      args.callComplete || false,
+
+    emergencyCaseId:
+      emergencyCaseId,
+
+    source: "voice_call"
+  }
+);
 
     return res.json({
       success: true,
