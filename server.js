@@ -47,7 +47,7 @@ app.post("/create-case", async (req, res) => {
           language:
             args.language || "english",
 
-          caseStatus: "active",
+          status: "active",
           source: "voice_call",
 
           emergencyCaseId,
