@@ -14,6 +14,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  res.json({
+    status: "online",
+    service: "WELA API"
+  });
+});
+
 app.listen(process.env.PORT, () => {
   console.log("Server is running");
 });
