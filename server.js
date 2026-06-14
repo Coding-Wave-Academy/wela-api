@@ -102,7 +102,8 @@ app.post("/create-case", async (req, res) => {
   }
 });
 
-app.post("/handle-photo-upload", async (req, res) => {
+
+// HANDLE PHOTO UPLOAD
 module.exports = async function (req, res) {
   try {
     const payload = JSON.parse(req.payload || '{}');
@@ -144,7 +145,6 @@ module.exports = async function (req, res) {
   }
 };
   
-}
 
 
 
