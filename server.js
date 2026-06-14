@@ -101,3 +101,52 @@ app.post("/create-case", async (req, res) => {
 
   }
 });
+
+app.post("/handle-photo-upload", async (req, res) => {
+module.exports = async function (req, res) {
+  try {
+    const payload = JSON.parse(req.payload || '{}');
+
+    // Cloudinary webhook payload
+    const publicId = payload.public_id || '';
+    const secureUrl = payload.secure_url || payload.url || '';
+
+    // Extract caseId from public_id format: wela_[CASE_ID]
+    const caseId = publicId.replace('wela_', '');
+
+    if (!caseId || !secureUrl) {
+      return res.json({ success: false, error: 'Missing caseId or URL' }, 400);
+    }
+
+    const { Client, Databases } = require('node-appwrite');
+    const client = new Client()
+      .setEndpoint(process.env.APPWRITE_ENDPOINT)
+      .setProject(process.env.APPWRITE_PROJECT_ID)
+      .setKey(process.env.APPWRITE_API_KEY);
+
+    const databases = new Databases(client);
+
+    await databases.updateDocument(
+      process.env.APPWRITE_DATABASE_ID,
+      'cases',
+      caseId,
+      { 
+        photoURL: secureUrl,
+        status: 'PHOTO_RECEIVED'
+      }
+    );
+
+    return res.json({ success: true, caseId, photoURL: secureUrl });
+
+  } catch (error) {
+    console.error('handlePhotoUpload error:', error);
+    return res.json({ success: false, error: error.message }, 500);
+  }
+};
+  
+}
+
+
+
+
+
